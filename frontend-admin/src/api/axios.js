@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: 'http://localhost:5001/api', // Pointing to our backend
+    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5001/api', // Uses env variable in production, falls back to localhost
 });
 
 // Ella requestilum JWT token auto aayi add cheyyan ulla interceptor

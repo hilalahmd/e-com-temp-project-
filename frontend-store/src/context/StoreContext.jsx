@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import api from '../api/axios';
+import { getTenantId } from '../utils/tenant';
 
 const StoreContext = createContext();
 
@@ -14,12 +15,12 @@ export const StoreProvider = ({ children }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const slug = params.get('store');
+    // Store URL or subdomain-il ninnu extract cheyyunnu
+    const slug = getTenantId();
     if (slug) {
       setStoreSlug(slug);
     } else {
-      setError("No store specified");
+      setError("No store specified. Try using ?store=store-name in the URL");
       setLoading(false);
     }
   }, []);

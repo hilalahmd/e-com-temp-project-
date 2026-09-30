@@ -15,11 +15,30 @@ if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
 
-// CORS - Production-il strict origin use cheyyanam, illenkil unauthorized access varum
+// CORS - Production-il strict origin use cheyyanam, pakshe wildcard subdomains allow cheyyanam
 const corsOptions = {
-    origin: process.env.NODE_ENV === 'production' 
-        ? ['https://yourproductiondomain.com'] 
-        : ['http://localhost:3000', 'http://localhost:3001'],
+    origin: function (origin, callback) {
+        if (!origin) return callback(null, true);
+        
+        // Localhost dev environments (including subdomains like http://store.localhost:3001) allow cheyyan
+        if (origin.includes('localhost') || origin.includes('127.0.0.1')) {
+            return callback(null, true);
+        }
+        
+        // Production domains allow cheyyan (add your main domain here)
+        // eg: if (origin.endsWith('.yourproductiondomain.com')) return callback(null, true);
+        const allowedDomains = process.env.ALLOWED_DOMAINS ? process.env.ALLOWED_DOMAINS.split(',') : [];
+        if (allowedDomains.some(domain => origin.endsWith(domain))) {
+            return callback(null, true);
+        }
+        
+        // Vercel preview URLs allow cheyyanamengil
+        if (origin.endsWith('.vercel.app')) {
+            return callback(null, true);
+        }
+        
+        callback(new Error('CORS blocked this origin'));
+    },
     credentials: true
 };
 app.use(cors(corsOptions));

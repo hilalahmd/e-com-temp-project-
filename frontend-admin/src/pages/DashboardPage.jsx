@@ -161,7 +161,7 @@ export default function DashboardPage() {
           <div className="flex items-center gap-4">
             <button onClick={() => setShowProfileModal(true)} className="hidden sm:block font-bold uppercase text-sm border-2 border-black px-4 py-2 hover:bg-gray-100 transition-colors">Profile</button>
             <a 
-              href={`http://localhost:3001?store=${store.storeSlug}`} 
+              href={import.meta.env.PROD ? `https://${store.storeSlug}.yourdomain.com` : `http://${store.storeSlug}.localhost:3001`} 
               target="_blank" 
               rel="noopener noreferrer"
               className="bg-green-400 border-2 border-black px-4 py-2 font-black uppercase tracking-widest text-sm flex items-center gap-2 hover:bg-green-500 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"

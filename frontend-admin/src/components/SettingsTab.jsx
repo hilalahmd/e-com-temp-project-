@@ -42,7 +42,9 @@ export default function SettingsTab({ store }) {
     }
   };
 
-  const storeUrl = `http://localhost:3001?store=${store?.storeSlug}`;
+  const storeUrl = import.meta.env.PROD 
+    ? `https://${store?.storeSlug}.yourdomain.com` 
+    : `http://${store?.storeSlug}.localhost:3001`;
 
   const copyUrl = () => {
     navigator.clipboard.writeText(storeUrl);
